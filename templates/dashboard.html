@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Attendance Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 20px 30px;
+      border-radius: 15px;
+      margin-bottom: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      color: #667eea;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    header .btn-home {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+    header .btn-home:hover {
+      background: #764ba2;
+      transform: translateY(-2px);
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid #667eea;
+    }
+
+    .stat-card.absent {
+      border-left-color: #f74c3c;
+    }
+
+    .stat-card.present {
+      border-left-color: #2ecc71;
+    }
+
+    .stat-card .label {
+      color: #666;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .stat-card .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #667eea;
+    }
+
+    .stat-card.absent .number {
+      color: #f74c3c;
+    }
+
+    .stat-card.present .number {
+      color: #2ecc71;
+    }
+
+    .content-area {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 1024px) {
+      .content-area {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    .card h2 {
+      color: #667eea;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      width: 100%;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-small {
+      width: auto;
+      padding: 8px 16px;
+      font-size: 0.9rem;
+    }
+
+    .records-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    .record-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 4px solid #667eea;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .record-item.present {
+      border-left-color: #2ecc71;
+    }
+
+    .record-item.absent {
+      border-left-color: #f74c3c;
+    }
+
+    .record-info {
+      flex-grow: 1;
+    }
+
+    .record-name {
+      font-weight: 600;
+      color: #333;
+    }
+
+    .record-details {
+      font-size: 0.85rem;
+      color: #666;
+      margin-top: 5px;
+    }
+
+    .record-status {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .record-status.present {
+      background: #2ecc71;
+      color: white;
+    }
+
+    .record-status.absent {
+      background: #f74c3c;
+      color: white;
+    }
+
+    .student-item {
+      background: #f8f9fa;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      border-left: 4px solid #667eea;
+    }
+
+    .student-name {
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    .student-details {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      background: #2ecc71;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .error-message {
+      background: #f74c3c;
+      color: white;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: #999;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+
+    .attendance-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .attendance-btn {
+      padding: 10px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      background: white;
+    }
+
+    .attendance-btn.present {
+      background: #2ecc71;
+      color: white;
+      border-color: #2ecc71;
+    }
+
+    .attendance-btn.absent {
+      background: #f74c3c;
+      color: white;
+      border-color: #f74c3c;
+    }
+
+    .attendance-btn:not(.present):not(.absent):hover {
+      border-color: #667eea;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card {
+      animation: slideIn 0.3s ease;
+    }
+
+    .students-list {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #667eea;
+      border-radius: 10px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #764ba2;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>
+        <i class="fas fa-chart-line"></i>
+        Attendance Dashboard
+      </h1>
+      <button class="btn-home" onclick="window.location.href='/'">
+        <i class="fas fa-home"></i> Home
+      </button>
+    </header>
+
+    <!-- Statistics Cards -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="label">Total Students</div>
+        <div class="number" id="totalStudents">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="label">Total Records</div>
+        <div class="number" id="totalRecords">0</div>
+      </div>
+      <div class="stat-card present">
+        <div class="label">Present</div>
+        <div class="number" id="presentCount">0</div>
+      </div>
+      <div class="stat-card absent">
+        <div class="label">Absent</div>
+        <div class="number" id="absentCount">0</div>
+      </div>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="content-area">
+      <!-- Add Student Card -->
+      <div class="card">
+        <h2>
+          <i class="fas fa-user-plus"></i>
+          Add New Student
+        </h2>
+        <div class="success-message" id="studentSuccess">
+          <i class="fas fa-check-circle"></i> Student added successfully!
+        </div>
+        <form id="studentForm">
+          <div class="form-group">
+            <label for="studentName">Student Name *</label>
+            <input type="text" id="studentName" name="name" required placeholder="Enter student name">
+          </div>
+          <div class="form-group">
+            <label for="rollNumber">Roll Number *</label>
+            <input type="text" id="rollNumber" name="roll_number" required placeholder="e.g., CS001">
+          </div>
+          <div class="form-group">
+            <label for="className">Class/Section *</label>
+            <input type="text" id="className" name="class" required placeholder="e.g., CSE-A">
+          </div>
+          <button type="submit" class="btn">
+            <i class="fas fa-plus"></i> Add Student
+          </button>
+        </form>
+      </div>
+
+      <!-- Mark Attendance Card -->
+      <div class="card">
+        <h2>
+          <i class="fas fa-clipboard-list"></i>
+          Mark Attendance
+        </h2>
+        <div class="success-message" id="attendanceSuccess">
+          <i class="fas fa-check-circle"></i> Attendance recorded successfully!
+        </div>
+        <form id="attendanceForm">
+          <div class="form-group">
+            <label for="studentSelect">Select Student *</label>
+            <select id="studentSelect" name="student_id" required>
+              <option value="">-- Choose Student --</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="attendanceDate">Date *</label>
+            <input type="date" id="attendanceDate" name="date" required>
+          </div>
+          <div class="form-group">
+            <label>Status *</label>
+            <div class="attendance-grid">
+              <button type="button" class="attendance-btn" data-status="present" onclick="selectStatus(this, 'present')">
+                <i class="fas fa-check"></i> Present
+              </button>
+              <button type="button" class="attendance-btn" data-status="absent" onclick="selectStatus(this, 'absent')">
+                <i class="fas fa-times"></i> Absent
+              </button>
+            </div>
+            <input type="hidden" id="attendanceStatus" name="status" required>
+          </div>
+          <button type="submit" class="btn">
+            <i class="fas fa-save"></i> Record Attendance
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Records and Students Display -->
+    <div class="content-area">
+      <!-- Recent Records -->
+      <div class="card">
+        <h2>
+          <i class="fas fa-history"></i>
+          Recent Records
+        </h2>
+        <div class="records-list" id="recordsList">
+          <div class="empty-state">
+            <i class="fas fa-inbox"></i>
+            <p>No records yet</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Students List -->
+      <div class="card">
+        <h2>
+          <i class="fas fa-users"></i>
+          Students List
+        </h2>
+        <div class="students-list" id="studentsList">
+          <div class="empty-state">
+            <i class="fas fa-user-graduate"></i>
+            <p>No students added yet</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Set today's date as default
+    document.getElementById('attendanceDate').valueAsDate = new Date();
+
+    // Load data on page load
+    window.addEventListener('load', loadDashboard);
+
+    function loadDashboard() {
+      loadStatistics();
+      loadStudents();
+      loadAttendanceRecords();
+    }
+
+    function loadStatistics() {
+      fetch('/api/statistics')
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById('totalStudents').textContent = data.total_students;
+          document.getElementById('totalRecords').textContent = data.total_records;
+          document.getElementById('presentCount').textContent = data.present_count;
+          document.getElementById('absentCount').textContent = data.absent_count;
+        });
+    }
+
+    function loadStudents() {
+      fetch('/api/students')
+        .then(res => res.json())
+        .then(students => {
+          const selectElement = document.getElementById('studentSelect');
+          const listElement = document.getElementById('studentsList');
+          
+          // Clear select options (keep the default)
+          selectElement.innerHTML = '<option value="">-- Choose Student --</option>';
+          
+          if (students.length === 0) {
+            listElement.innerHTML = '<div class="empty-state"><i class="fas fa-user-graduate"></i><p>No students added yet</p></div>';
+          } else {
+            listElement.innerHTML = '';
+            students.forEach(student => {
+              // Add to select
+              const option = document.createElement('option');
+              option.value = student.id;
+              option.textContent = `${student.name} (${student.roll_number})`;
+              selectElement.appendChild(option);
+
+              // Add to list
+              const item = document.createElement('div');
+              item.className = 'student-item';
+              item.innerHTML = `
+                <div class="student-name"><i class="fas fa-user-circle"></i> ${student.name}</div>
+                <div class="student-details">
+                  <strong>Roll:</strong> ${student.roll_number} | <strong>Class:</strong> ${student.class}
+                </div>
+              `;
+              listElement.appendChild(item);
+            });
+          }
+        });
+    }
+
+    function loadAttendanceRecords() {
+      fetch('/api/attendance')
+        .then(res => res.json())
+        .then(records => {
+          const listElement = document.getElementById('recordsList');
+          
+          if (records.length === 0) {
+            listElement.innerHTML = '<div class="empty-state"><i class="fas fa-inbox"></i><p>No records yet</p></div>';
+          } else {
+            listElement.innerHTML = '';
+            records.slice().reverse().forEach(record => {
+              // Get student name
+              fetch('/api/students')
+                .then(res => res.json())
+                .then(students => {
+                  const student = students.find(s => s.id === record.student_id);
+                  const studentName = student ? student.name : 'Unknown';
+                  
+                  const item = document.createElement('div');
+                  item.className = `record-item ${record.status}`;
+                  item.innerHTML = `
+                    <div class="record-info">
+                      <div class="record-name">${studentName}</div>
+                      <div class="record-details">${record.date}</div>
+                    </div>
+                    <div class="record-status ${record.status}">
+                      ${record.status.charAt(0).toUpperCase() + record.status.slice(1)}
+                    </div>
+                  `;
+                  listElement.appendChild(item);
+                });
+            });
+          }
+        });
+    }
+
+    function selectStatus(button, status) {
+      document.querySelectorAll('.attendance-btn').forEach(btn => {
+        btn.classList.remove('present', 'absent');
+      });
+      button.classList.add(status);
+      document.getElementById('attendanceStatus').value = status;
+    }
+
+    document.getElementById('studentForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        name: document.getElementById('studentName').value,
+        roll_number: document.getElementById('rollNumber').value,
+        class: document.getElementById('className').value
+      };
+
+      fetch('/api/students', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById('studentSuccess').style.display = 'block';
+          document.getElementById('studentForm').reset();
+          setTimeout(() => {
+            document.getElementById('studentSuccess').style.display = 'none';
+          }, 3000);
+          loadDashboard();
+        }
+      });
+    });
+
+    document.getElementById('attendanceForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      if (!document.getElementById('attendanceStatus').value) {
+        alert('Please select a status (Present or Absent)');
+        return;
+      }
+
+      const formData = {
+        student_id: parseInt(document.getElementById('studentSelect').value),
+        date: document.getElementById('attendanceDate').value,
+        status: document.getElementById('attendanceStatus').value
+      };
+
+      fetch('/api/attendance', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          document.getElementById('attendanceSuccess').style.display = 'block';
+          document.getElementById('attendanceForm').reset();
+          document.querySelectorAll('.attendance-btn').forEach(btn => {
+            btn.classList.remove('present', 'absent');
+          });
+          document.getElementById('attendanceDate').valueAsDate = new Date();
+          setTimeout(() => {
+            document.getElementById('attendanceSuccess').style.display = 'none';
+          }, 3000);
+          loadDashboard();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

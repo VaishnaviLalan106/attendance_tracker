@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Attendance Tracker | Smart. Simple. Reliable.</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      color: #333;
+      line-height: 1.6;
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 10%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #1e3c72;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1e3c72;
+      font-weight: 500;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #2a5298;
+    }
+
+    header {
+      padding: 80px 10% 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 40px;
+    }
+
+    .hero-text {
+      max-width: 520px;
+    }
+
+    .hero-text h1 {
+      font-size: 3.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      color: #1e3c72;
+      line-height: 1.2;
+    }
+
+    .hero-text .subtitle {
+      font-size: 1.3rem;
+      color: #2a5298;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
+
+    .hero-text p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      color: #555;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 14px 28px;
+      border: none;
+      font-size: 1rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 25px rgba(30, 60, 114, 0.3);
+    }
+
+    .btn-secondary {
+      background: #fff;
+      color: #1e3c72;
+      border: 2px solid #1e3c72;
+    }
+
+    .btn-secondary:hover {
+      background: #1e3c72;
+      color: #fff;
+    }
+
+    .hero-img img {
+      width: 420px;
+      max-width: 100%;
+      filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.1));
+    }
+
+    section {
+      padding: 60px 10%;
+    }
+
+    .features h2,
+    .benefits h2,
+    .cta h2 {
+      text-align: center;
+      font-size: 2.8rem;
+      margin-bottom: 40px;
+      color: #1e3c72;
+    }
+
+    .section-description {
+      text-align: center;
+      font-size: 1.1rem;
+      color: #666;
+      margin-bottom: 40px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .feature-card {
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+      transition: all 0.3s ease;
+      border-top: 4px solid #1e3c72;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.12);
+    }
+
+    .feature-card .icon {
+      font-size: 2.5rem;
+      color: #1e3c72;
+      margin-bottom: 15px;
+    }
+
+    .feature-card h3 {
+      margin-bottom: 15px;
+      color: #1e3c72;
+      font-size: 1.1rem;
+      color: #666;
+      line-height: 1.8;
+    }
+
+    .benefits {
+      background: #f9fafc;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 60px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      padding: 40px 20px;
+      border-radius: 15px;
+      text-align: center;
+    }
+
+    .stat-card .number {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .stat-card p {
+      font-size: 0.95rem;
+    }
+
+    .cta {
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
+      text-align: center;
+      border-radius: 20px;
+      padding: 70px 10%;
+      margin: 60px 5%;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+    }
+
+    .cta button {
+      padding: 14px 30px;
+      background: #fff;
+      color: #1e3c72;
+      border: none;
+      border-radius: 30px;
+      font-size: 1rem;
+      cursor: pointer;
+      font-weight: 600;
+      transition: 0.3s ease;
+    }
+
+    .cta button:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 10%;
+      background: #2c3e50;
+      color: #ecf0f1;
+      margin-top: 40px;
+    }
+
+    footer .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+      text-align: left;
+    }
+
+    footer h4 {
+      margin-bottom: 15px;
+      color: #fff;
+    }
+
+    footer ul {
+      list-style: none;
+    }
+
+    footer ul li {
+      margin-bottom: 10px;
+    }
+
+    footer a {
+      color: #bdc3c7;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    footer a:hover {
+      color: #fff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #34495e;
+      padding-top: 20px;
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .nav-links {
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      header {
+        flex-direction: column;
+        text-align: center;
+        padding: 60px 10% 40px;
+      }
+
+      .hero-text h1 {
+        font-size: 2.2rem;
+      }
+
+      .hero-img {
+        margin-top: 40px;
+      }
+
+      .button-group {
+        justify-content: center;
+      }
+
+      .features h2,
+      .benefits h2,
+      .cta h2 {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav>
+    <div class="logo">
+      <i class="fas fa-check-circle"></i> Attendance Tracker
+    </div>
+    <ul class="nav-links">
+      <li><a href="#features">Features</a></li>
+      <li><a href="#benefits">Benefits</a></li>
+      <li><a href="#cta">Get Started</a></li>
+      <li><a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <header>
+    <div class="hero-text">
+      <div class="subtitle">Welcome to</div>
+      <h1>Attendance Tracker</h1>
+      <p>
+        Track student attendance effortlessly. Stay organized, save time, and manage records digitally with ease. Perfect for educators and institutions.
+      </p>
+      <div class="button-group">
+        <button class="btn btn-primary">
+          <i class="fas fa-play"></i> Launch App
+        </button>
+        <button class="btn btn-secondary">
+          <i class="fas fa-info-circle"></i> Learn More
+        </button>
+      </div>
+    </div>
+    <div class="hero-img">
+      <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Attendance Illustration">
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="features" id="features">
+    <h2>Why Choose Our App?</h2>
+    <p class="section-description">Streamline your attendance management with our powerful and intuitive platform</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="icon"><i class="fas fa-mouse-pointer"></i></div>
+        <h3>Easy Attendance</h3>
+        <p>Mark attendance in just a few clicks with a clean, simple interface designed for efficiency.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><i class="fas fa-chart-bar"></i></div>
+        <h3>Smart Reports</h3>
+        <p>Generate daily, weekly, and monthly attendance reports instantly with detailed analytics.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><i class="fas fa-lock"></i></div>
+        <h3>Secure Storage</h3>
+        <p>Your data is stored safely with encryption and can be accessed anytime from anywhere.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><i class="fas fa-mobile-alt"></i></div>
+        <h3>Responsive Design</h3>
+        <p>Works perfectly on desktops, tablets, and mobile devices for seamless accessibility.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><i class="fas fa-users"></i></div>
+        <h3>Multi-User Support</h3>
+        <p>Manage multiple classes, sections, and instructors with role-based access control.</p>
+      </div>
+      <div class="feature-card">
+        <div class="icon"><i class="fas fa-download"></i></div>
+        <h3>Export Options</h3>
+        <p>Export attendance records in various formats (PDF, CSV, Excel) for easy sharing.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Benefits Section -->
+  <section class="benefits" id="benefits">
+    <h2>Key Benefits</h2>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="number">95%</div>
+        <p>Time Saved on Attendance Management</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">100%</div>
+        <p>Data Accuracy & Reliability</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">24/7</div>
+        <p>Access Anytime, Anywhere</p>
+      </div>
+      <div class="stat-card">
+        <div class="number">∞</div>
+        <p>Unlimited Records Storage</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action Section -->
+  <section class="cta" id="cta">
+    <h2>Start Tracking Attendance Today</h2>
+    <p>Perfect for colleges, schools, universities, and training institutes of all sizes.</p>
+    <button class="btn btn-secondary" style="background: #fff; color: #1e3c72;">
+      <i class="fas fa-rocket"></i> Get Started Now
+    </button>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-content">
+      <div>
+        <h4><i class="fas fa-check-circle"></i> Attendance Tracker</h4>
+        <p>Smart attendance management system for educational institutions.</p>
+      </div>
+      <div>
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#benefits">Benefits</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="#">FAQ</a></li>
+          <li><a href="#">Contact Us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Twitter</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Instagram</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 Attendance Tracker. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      });
+    });
+
+    // Button click handlers
+    document.querySelectorAll('.btn-primary').forEach(btn => {
+      btn.addEventListener('click', function() {
+        window.location.href = '/dashboard';
+      });
+    });
+
+    document.querySelectorAll('.cta button').forEach(btn => {
+      btn.addEventListener('click', function() {
+        window.location.href = '/dashboard';
+      });
+    });
+  </script>
+</body>
+</html>
